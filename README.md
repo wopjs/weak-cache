@@ -9,7 +9,7 @@
 [![Coverage Status](https://img.shields.io/coverallsCoverage/github/wopjs/weak-cache)](https://coveralls.io/github/wopjs/weak-cache)
 
 [![npm-version](https://img.shields.io/npm/v/@wopjs/weak-cache.svg)](https://www.npmjs.com/package/@wopjs/weak-cache)
-[![minified-size](https://img.shields.io/bundlephobia/minzip/weak-cache)](https://bundlephobia.com/package/@wopjs/weak-cache)
+[![minified-size](https://img.shields.io/bundlephobia/minzip/@wopjs/weak-cache)](https://bundlephobia.com/package/@wopjs/weak-cache)
 [![no-dependencies](https://img.shields.io/badge/dependencies-none-success)](https://bundlejs.com/?q=@wopjs/weak-cache)
 [![tree-shakable](https://img.shields.io/badge/tree-shakable-success)](https://bundlejs.com/?q=@wopjs/weak-cache)
 [![side-effect-free](https://img.shields.io/badge/side--effect-free-success)](https://bundlejs.com/?q=@wopjs/weak-cache)
