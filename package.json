@@ -1,0 +1,50 @@
+{
+  "name": "weak-cache",
+  "version": "0.0.1",
+  "private": false,
+  "description": "WeakCache is like WeakMap but extends support to primitive keys, and with both object keys and object values being weakly referenced.",
+  "license": "MIT",
+  "author": "CRIMX <straybugs@gmail.com> (https://github.com/crimx/)",
+  "repository": "crimx/weak-cache",
+  "sideEffects": false,
+  "main": "./dist/main.js",
+  "module": "./dist/main.mjs",
+  "unpkg": "./dist/main.umd.js",
+  "jsdelivr": "./dist/main.umd.js",
+  "types": "./dist/main.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "prepublishOnly": "pnpm run build",
+    "lint": "eslint --ext .ts,.tsx . && prettier --check .",
+    "docs": "typedoc --options typedoc.json",
+    "build": "tsup --onSuccess \"node scripts/build-umd.mjs\"",
+    "test": "node --expose-gc ./node_modules/vitest/vitest.mjs",
+    "test:coverage": "node --expose-gc ./node_modules/vitest/vitest.mjs run --coverage",
+    "build:min": "cross-env NODE_ENV=production MINIFY=true tsup && node scripts/gzip.mjs",
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.12",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "@vitest/coverage-c8": "^0.31.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "gzip-size": "^7.0.0",
+    "prettier": "^2.8.7",
+    "pretty-bytes": "^6.1.0",
+    "rollup": "^3.22.0",
+    "standard-version": "^9.5.0",
+    "tsup": "^6.7.0",
+    "typedoc": "^0.26.5",
+    "typescript": "^5.0.4",
+    "vite": "^4.2.2",
+    "vitest": "^0.31.0",
+    "yoctocolors": "^1.0.0"
+  },
+  "packageManager": "pnpm@9.6.0"
+}

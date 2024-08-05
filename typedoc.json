@@ -1,0 +1,13 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/main.ts"],
+  "customCss": "./assets/docs.css",
+  "out": "docs",
+  "visibilityFilters": {},
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "cleanOutputDir": true,
+  "includeVersion": true,
+  "hideGenerator": true
+}
