@@ -1,11 +1,11 @@
 {
-  "name": "weak-cache",
+  "name": "@wopjs/weak-cache",
   "version": "0.0.1",
   "private": false,
   "description": "WeakCache is like WeakMap but extends support to primitive keys, and with both object keys and object values being weakly referenced.",
   "license": "MIT",
   "author": "CRIMX <straybugs@gmail.com> (https://github.com/crimx/)",
-  "repository": "crimx/weak-cache",
+  "repository": "wopjs/weak-cache",
   "sideEffects": false,
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
