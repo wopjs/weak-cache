@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.4](https://github.com/wopjs/weak-cache/compare/v0.1.3...v0.1.4) (2024-12-23)
+
+
+### Features
+
+* add clear dispose callback ([c8484c2](https://github.com/wopjs/weak-cache/commit/c8484c226d7288254e8c54caeb6ebcfd1c33772e))
+
 ## [0.1.3](https://github.com/wopjs/weak-cache/compare/v0.1.2...v0.1.3) (2024-12-23)
 
 
