@@ -1,6 +1,6 @@
 {
   "name": "@wopjs/weak-cache",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "WeakCache is like WeakMap but extends support to primitive keys, and with both object keys and object values being weakly referenced.",
   "repository": "wopjs/weak-cache",
   "main": "./dist/index.js",
