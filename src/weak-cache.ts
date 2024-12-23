@@ -52,6 +52,19 @@ export class WeakCache<K extends {}, V extends WeakKey = WeakKey> {
   }
 
   /**
+   *
+   * @param key
+   * @param create
+   */
+  public ensure(key: K, create: () => V): V {
+    let value = this.get(key);
+    if (!value) {
+      this.set(key, (value = create()));
+    }
+    return value;
+  }
+
+  /**
    * @returns a specified element.
    */
   public get(key: K): undefined | V {
@@ -62,12 +75,13 @@ export class WeakCache<K extends {}, V extends WeakKey = WeakKey> {
    * @returns a boolean indicating whether an element with the specified key exists or not.
    */
   public has(key: K): boolean {
-    return this._refs_.has(getPrimitiveKey(key));
+    return this.get(key) !== undefined;
   }
 
   /**
    * Adds a new element with a specified key and value.
    * @param key Must be an object or symbol.
+   * @returns this
    */
   public set(key: K, value: V): this {
     const k = getPrimitiveKey(key);

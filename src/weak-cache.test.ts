@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { WeakCache } from "./index";
 
@@ -85,6 +85,33 @@ describe("WeakCache", () => {
     expect(cache.has(objectKey)).toEqual(false);
     expect(cache.get(objectKey)).toBeUndefined();
     expect(cache.size).toBe(0);
+  });
+
+  it("should ensure value", () => {
+    const cache = new WeakCache();
+    const key = "key";
+    const value = { value: "value" };
+    const spy = vi.fn(() => value);
+
+    const result = cache.ensure(key, spy);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(result).toBe(value);
+    expect(cache.get(key)).toBe(value);
+
+    spy.mockClear();
+
+    const result2 = cache.ensure(key, spy);
+    expect(spy).toHaveBeenCalledTimes(0);
+    expect(result2).toBe(value);
+    expect(cache.get(key)).toBe(value);
+
+    cache.delete(key);
+
+    const result3 = cache.ensure(key, spy);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(result3).toBe(value);
+    expect(cache.get(key)).toBe(value);
   });
 
   it("should dispose cache", () => {
