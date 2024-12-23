@@ -26,9 +26,13 @@ export class WeakCache<K extends {}, V extends WeakKey = WeakKey> {
     }
   }
 
-  public clear(): void {
+  public clear(dispose?: (value: V) => void): void {
     for (const ref of this._refs_.values()) {
       this._registry_.unregister(ref);
+      if (dispose) {
+        const value = ref.deref();
+        if (value) dispose(value);
+      }
     }
     this._refs_.clear();
   }

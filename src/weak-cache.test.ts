@@ -87,6 +87,37 @@ describe("WeakCache", () => {
     expect(cache.size).toBe(0);
   });
 
+  it("should clear cache with dispose", () => {
+    const cache = new WeakCache();
+    const key = "key";
+    const valueDisposeSpy = vi.fn();
+    const value = { dispose: valueDisposeSpy, value: "value" };
+    const objectKey = { key: "key" };
+    const objectValueDisposeSpy = vi.fn();
+    const objectValue = { dispose: objectValueDisposeSpy, value: "value" };
+
+    cache.set(key, value);
+    cache.set(objectKey, objectValue);
+
+    expect(cache.has(key)).toEqual(true);
+    expect(cache.get(key)).toEqual(value);
+    expect(cache.has(objectKey)).toEqual(true);
+    expect(cache.get(objectKey)).toEqual(objectValue);
+    expect(cache.size).toBe(2);
+
+    const clearSpy = vi.fn(x => x.dispose());
+    cache.clear(clearSpy);
+
+    expect(clearSpy).toHaveBeenCalledTimes(2);
+    expect(cache.has(key)).toEqual(false);
+    expect(cache.get(key)).toBeUndefined();
+    expect(valueDisposeSpy).toHaveBeenCalledTimes(1);
+    expect(cache.has(objectKey)).toEqual(false);
+    expect(cache.get(objectKey)).toBeUndefined();
+    expect(objectValueDisposeSpy).toHaveBeenCalledTimes(1);
+    expect(cache.size).toBe(0);
+  });
+
   it("should ensure value", () => {
     const cache = new WeakCache();
     const key = "key";
