@@ -1,5 +1,5 @@
 export const isObject = (value: any): value is object =>
-  !!value && value.constructor === Object;
+  value !== null && typeof value === "object";
 
 const keys = new WeakMap<object, symbol>();
 

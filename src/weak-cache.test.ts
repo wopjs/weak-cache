@@ -43,6 +43,24 @@ describe("WeakCache", () => {
     expect(cache.get(key)).toBeUndefined();
   });
 
+  it.only("should cache plain object key with object value", () => {
+    const cache = new WeakCache();
+    const key = Object.create(null);
+    key.key = "key";
+    const value = { value: "value" };
+
+    cache.set(key, value);
+
+    expect(cache.has(key)).toEqual(true);
+    expect(cache.get(key)).toEqual(value);
+
+    cache.delete(key);
+    cache.delete("not-exist");
+
+    expect(cache.has(key)).toEqual(false);
+    expect(cache.get(key)).toBeUndefined();
+  });
+
   it("should clear cache", () => {
     const cache = new WeakCache();
     const key = "key";
