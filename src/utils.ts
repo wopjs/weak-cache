@@ -1,9 +1,8 @@
-export const isObject = (value: unknown): value is object =>
-  value !== null && (typeof value === "object" || typeof value === "function");
-
 const keys = new WeakMap<object, symbol>();
 
-export type PrimitiveKey = boolean | null | number | string | symbol | undefined;
+export type PrimitiveKey = boolean | number | string | symbol;
 
 export const getPrimitiveKey = (key: unknown): PrimitiveKey =>
-  isObject(key) ? (keys.has(key) ? keys : keys.set(key, Symbol())).get(key) : (key as PrimitiveKey);
+  key === null || (typeof key !== "object" && typeof key !== "function")
+    ? (key as PrimitiveKey)
+    : (keys.has(key) ? keys : keys.set(key, Symbol())).get(key)!;
