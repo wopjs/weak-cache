@@ -1,5 +1,9 @@
 # @wopjs/weak-cache
 
+<p align="center">
+  <img width="200" src="https://raw.githubusercontent.com/wopjs/weak-cache/main/assets/logo.svg">
+</p>
+
 [![Docs](https://img.shields.io/badge/Docs-read-%23fdf9f5)](https://wopjs.github.io/weak-cache)
 [![Build Status](https://github.com/wopjs/weak-cache/actions/workflows/build.yml/badge.svg)](https://github.com/wopjs/weak-cache/actions/workflows/build.yml)
 [![npm-version](https://img.shields.io/npm/v/@wopjs/weak-cache.svg)](https://www.npmjs.com/package/@wopjs/weak-cache)
