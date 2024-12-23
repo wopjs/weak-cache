@@ -2,15 +2,18 @@ import { getPrimitiveKey, isObject, type PrimitiveKey } from "./utils";
 
 export class WeakCache<K, V extends WeakKey = WeakKey> {
   public get size(): number {
-    return this.#map.size;
+    return this._map_.size;
   }
-  #map = new Map<PrimitiveKey, WeakRef<V>>();
 
-  #registry = new FinalizationRegistry<PrimitiveKey>(key => {
-    const ref = this.#map.get(key);
+  /** @internal */
+  private _map_ = new Map<PrimitiveKey, WeakRef<V>>();
+
+  /** @internal */
+  private _registry_ = new FinalizationRegistry<PrimitiveKey>(key => {
+    const ref = this._map_.get(key);
     if (ref) {
-      this.#registry.unregister(ref);
-      this.#map.delete(key);
+      this._registry_.unregister(ref);
+      this._map_.delete(key);
     }
   });
 
@@ -23,10 +26,10 @@ export class WeakCache<K, V extends WeakKey = WeakKey> {
   }
 
   public clear(): void {
-    for (const ref of this.#map.values()) {
-      this.#registry.unregister(ref);
+    for (const ref of this._map_.values()) {
+      this._registry_.unregister(ref);
     }
-    this.#map.clear();
+    this._map_.clear();
   }
 
   /**
@@ -35,10 +38,10 @@ export class WeakCache<K, V extends WeakKey = WeakKey> {
    */
   public delete(key: K): boolean {
     const k = getPrimitiveKey(key);
-    const ref = this.#map.get(k);
+    const ref = this._map_.get(k);
     if (ref) {
-      this.#registry.unregister(ref);
-      return this.#map.delete(k);
+      this._registry_.unregister(ref);
+      return this._map_.delete(k);
     }
     return false;
   }
@@ -51,14 +54,14 @@ export class WeakCache<K, V extends WeakKey = WeakKey> {
    * @returns a specified element.
    */
   public get(key: K): undefined | V {
-    return this.#map.get(getPrimitiveKey(key))?.deref();
+    return this._map_.get(getPrimitiveKey(key))?.deref();
   }
 
   /**
    * @returns a boolean indicating whether an element with the specified key exists or not.
    */
   public has(key: K): boolean {
-    return this.#map.has(getPrimitiveKey(key));
+    return this._map_.has(getPrimitiveKey(key));
   }
 
   /**
@@ -68,10 +71,10 @@ export class WeakCache<K, V extends WeakKey = WeakKey> {
   public set(key: K, value: V): this {
     const k = getPrimitiveKey(key);
     const ref = new WeakRef(value);
-    this.#map.set(k, ref);
-    this.#registry.register(value, k, ref);
+    this._map_.set(k, ref);
+    this._registry_.register(value, k, ref);
     if (isObject(key)) {
-      this.#registry.register(key, k, ref);
+      this._registry_.register(key, k, ref);
     }
     return this;
   }
