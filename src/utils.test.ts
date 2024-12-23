@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getPrimitiveKey } from "./utils";
 
 describe("getPrimitiveKey", () => {
@@ -27,5 +28,12 @@ describe("getPrimitiveKey", () => {
     expect(typeof symbol).toEqual("symbol");
     expect(getPrimitiveKey(key)).toEqual(symbol);
     expect(getPrimitiveKey(key)).toEqual(getPrimitiveKey(key));
+  });
+
+  it("should return symbol for function key", () => {
+    const key = () => {};
+    const symbol = getPrimitiveKey(key);
+    expect(typeof symbol).toEqual("symbol");
+    expect(getPrimitiveKey(key)).toEqual(symbol);
   });
 });

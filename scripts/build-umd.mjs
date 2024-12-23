@@ -1,11 +1,11 @@
 import { rollup } from "rollup";
 
 const bundle = await rollup({
-  input: ["dist/main.mjs"],
+  input: ["dist/index.mjs"],
 });
 
 await bundle.write({
+  file: "dist/index.umd.js",
   format: "umd",
-  file: "dist/main.umd.js",
   name: "weak-cache",
 });

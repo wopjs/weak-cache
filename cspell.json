@@ -1,18 +1,20 @@
 {
   "language": "en",
   "words": [
-    "abortable",
     "coverallsapp",
     "CRIMX",
-    "Dataless",
-    "esbuild",
-    "jsdelivr",
+    "endregion",
+    "hyrious",
     "lcov",
-    "pnpm",
+    "loglevel",
+    "mjsx",
+    "mtsx",
+    "Parens",
     "preinstall",
     "treeshake",
     "tsup",
     "typedoc",
+    "Vals",
     "vite",
     "vitest",
     "wopjs",
@@ -23,7 +25,6 @@
     "**/node_modules/**",
     "**/dist/**",
     "cspell.config.js",
-    "pnpm-lock.yaml",
     "CHANGELOG.md"
   ]
 }

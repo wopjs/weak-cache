@@ -1,8 +1,11 @@
-import type { PrimitiveKey } from "./utils";
-import { getPrimitiveKey, isObject } from "./utils";
+import { getPrimitiveKey, isObject, type PrimitiveKey } from "./utils";
 
-export class WeakCache<K = any, V extends WeakKey = WeakKey> {
+export class WeakCache<K, V extends WeakKey = WeakKey> {
+  public get size(): number {
+    return this.#map.size;
+  }
   #map = new Map<PrimitiveKey, WeakRef<V>>();
+
   #registry = new FinalizationRegistry<PrimitiveKey>(key => {
     const ref = this.#map.get(key);
     if (ref) {
@@ -19,6 +22,13 @@ export class WeakCache<K = any, V extends WeakKey = WeakKey> {
     }
   }
 
+  public clear(): void {
+    for (const ref of this.#map.values()) {
+      this.#registry.unregister(ref);
+    }
+    this.#map.clear();
+  }
+
   /**
    * Removes the specified element from the WeakMap.
    * @returns true if the element was successfully removed, or false if it was not present.
@@ -33,10 +43,14 @@ export class WeakCache<K = any, V extends WeakKey = WeakKey> {
     return false;
   }
 
+  public dispose(): void {
+    this.clear();
+  }
+
   /**
    * @returns a specified element.
    */
-  public get(key: K): V | undefined {
+  public get(key: K): undefined | V {
     return this.#map.get(getPrimitiveKey(key))?.deref();
   }
 
@@ -60,20 +74,5 @@ export class WeakCache<K = any, V extends WeakKey = WeakKey> {
       this.#registry.register(key, k, ref);
     }
     return this;
-  }
-
-  public get size(): number {
-    return this.#map.size;
-  }
-
-  public clear(): void {
-    for (const ref of this.#map.values()) {
-      this.#registry.unregister(ref);
-    }
-    this.#map.clear();
-  }
-
-  public dispose(): void {
-    this.clear();
   }
 }

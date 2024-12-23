@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { WeakCache } from "./weak-cache";
+
+import { WeakCache } from "./index";
 
 const wait = (ms = 100) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -43,7 +44,7 @@ describe("WeakCache", () => {
     expect(cache.get(key)).toBeUndefined();
   });
 
-  it.only("should cache plain object key with object value", () => {
+  it("should cache plain object key with object value", () => {
     const cache = new WeakCache();
     const key = Object.create(null);
     key.key = "key";
