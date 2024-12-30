@@ -97,4 +97,13 @@ export class WeakCache<K extends {}, V extends WeakKey = WeakKey> {
     }
     return this;
   }
+
+  public *values(): IterableIterator<V> {
+    for (const ref of this._refs_.values()) {
+      const value = ref.deref();
+      if (value) {
+        yield value;
+      }
+    }
+  }
 }

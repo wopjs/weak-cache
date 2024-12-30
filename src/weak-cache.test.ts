@@ -226,4 +226,24 @@ describe("WeakCache", () => {
       cache.set("key", "value");
     }).toThrowError();
   });
+
+  it("should get alive values of cache", async () => {
+    const value = { value: "value" };
+    const cache = new WeakCache<string | { key: string }, { value: string }>([
+      ["key", { value: "value" }],
+      [{ key: "key" }, { value: "value" }],
+      [{ key: "key" }, { value: "value" }],
+      [{ key: "key" }, value],
+      ["key2", value],
+    ]);
+
+    expect(cache.size).toBeGreaterThan(0);
+    expect([...cache.values()].length).toBeGreaterThan(0);
+
+    await waitGC();
+
+    expect(cache.size).toBe(1);
+    expect([...cache.values()].length).toBe(1);
+    expect(cache.values().next().value).toBe(value);
+  });
 });
