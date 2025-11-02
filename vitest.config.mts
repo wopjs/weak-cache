@@ -6,10 +6,6 @@ export default defineConfig({
       include: ["src/**"],
       reporter: ["html", "text", "lcov"],
     },
-    poolOptions: {
-      forks: {
-        execArgv: ["--expose-gc"],
-      },
-    },
+    execArgv: ["--expose-gc"],
   },
 });
