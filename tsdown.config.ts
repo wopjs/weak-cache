@@ -7,7 +7,7 @@ export default defineConfig({
     index: "src/index.ts",
   },
   outputOptions: {
-    name: "WeakCache",
+    name: "weak_cache",
   },
   format: ["cjs", "esm", "umd"],
   minify: Boolean(process.env.MINIFY),
