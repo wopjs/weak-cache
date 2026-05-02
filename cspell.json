@@ -12,7 +12,7 @@
     "Parens",
     "preinstall",
     "treeshake",
-    "tsup",
+    "tsdown",
     "typedoc",
     "Vals",
     "vite",
@@ -20,11 +20,5 @@
     "wopjs",
     "yoctocolors"
   ],
-  "ignorePaths": [
-    "**/coverage/**",
-    "**/node_modules/**",
-    "**/dist/**",
-    "cspell.config.js",
-    "CHANGELOG.md"
-  ]
+  "ignorePaths": ["**/coverage/**", "**/node_modules/**", "**/dist/**", "cspell.config.js", "CHANGELOG.md"]
 }

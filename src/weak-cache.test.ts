@@ -2,12 +2,21 @@ import { describe, expect, it, vi } from "vitest";
 
 import { WeakCache } from "./index";
 
-const wait = (ms = 100) => new Promise(resolve => setTimeout(resolve, ms));
+const wait = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitGC = async () => {
   await wait();
   gc!();
   await wait();
+};
+
+type WeakCacheInternals<V extends WeakKey> = {
+  _f: Map<unknown, WeakRef<V>>;
+};
+
+const setDeadRef = <V extends WeakKey>(cache: WeakCache<string, V>, key: string) => {
+  const deadRef = { deref: () => undefined } as WeakRef<V>;
+  (cache as unknown as WeakCacheInternals<V>)._f.set(key, deadRef);
 };
 
 describe("WeakCache", () => {
@@ -105,7 +114,7 @@ describe("WeakCache", () => {
     expect(cache.get(objectKey)).toEqual(objectValue);
     expect(cache.size).toBe(2);
 
-    const clearSpy = vi.fn(x => x.dispose());
+    const clearSpy = vi.fn((x) => x.dispose());
     cache.clear(clearSpy);
 
     expect(clearSpy).toHaveBeenCalledTimes(2);
@@ -115,6 +124,20 @@ describe("WeakCache", () => {
     expect(cache.has(objectKey)).toEqual(false);
     expect(cache.get(objectKey)).toBeUndefined();
     expect(objectValueDisposeSpy).toHaveBeenCalledTimes(1);
+    expect(cache.size).toBe(0);
+  });
+
+  it("should skip collected values when clearing cache with dispose", () => {
+    const cache = new WeakCache<string, { value: string }>();
+    const dispose = vi.fn();
+
+    setDeadRef(cache, "key");
+
+    expect(cache.size).toBe(1);
+
+    cache.clear(dispose);
+
+    expect(dispose).toHaveBeenCalledTimes(0);
     expect(cache.size).toBe(0);
   });
 
@@ -218,6 +241,31 @@ describe("WeakCache", () => {
     expect(cache.size).toBe(0);
   });
 
+  it("should ignore stale finalization callbacks after a key is removed", async () => {
+    const cache = new WeakCache<string, { value: string }>();
+    const key = "key";
+    const cacheInternals = cache as unknown as WeakCacheInternals<{ value: string }>;
+    const getSpy = vi.spyOn(cacheInternals._f, "get");
+
+    (() => {
+      cache.set(key, { value: "stale" });
+    })();
+
+    const value = { value: "value" };
+
+    cache.set(key, value);
+    cache.delete(key);
+    getSpy.mockClear();
+
+    for (let i = 0; i < 10 && getSpy.mock.calls.length === 0; i += 1) {
+      await waitGC();
+    }
+
+    expect(getSpy).toHaveBeenCalledWith(key);
+    expect(cache.size).toBe(0);
+    expect(value).toEqual({ value: "value" });
+  });
+
   it("should throw error if value is not an object", () => {
     const cache = new WeakCache();
 
@@ -245,5 +293,15 @@ describe("WeakCache", () => {
     expect(cache.size).toBe(1);
     expect([...cache.values()].length).toBe(1);
     expect(cache.values().next().value).toBe(value);
+  });
+
+  it("should skip collected values while iterating cache values", () => {
+    const value = { value: "value" };
+    const cache = new WeakCache<string, { value: string }>();
+
+    cache.set("alive", value);
+    setDeadRef(cache, "dead");
+
+    expect([...cache.values()]).toEqual([value]);
   });
 });
